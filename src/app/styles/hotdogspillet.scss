@@ -1,0 +1,149 @@
+@import 'variables.scss';
+
+// Styling af startskærmen
+
+.start-screen section {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    height: 100vh;
+    padding: 40px 20px 0 20px;
+    gap: 8px;
+
+    .molly {
+        display: flex;
+        justify-content: center;
+        padding-top: 32px;
+    }
+}
+
+.result-screen,
+.limit-screen {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    padding: 40px 20px 0 20px;
+    gap: 8px;
+}
+
+.result-screen {
+
+    .score {
+        color: #000;
+        text-align: center;
+        font-family: $avenir-font;
+        font-size: 40px;
+        font-style: normal;
+        font-weight: 900;
+        line-height: 120%
+    }
+
+    .standing-molly {
+        display: flex;
+        justify-content: center;
+        padding: 50px 0 40px 0;
+    }
+
+    h1 {
+        text-align: center;
+    }
+
+    p {
+        text-align: center;
+    }
+
+    a {
+        text-align: center;
+
+    }
+}
+
+.limit-screen {
+
+    .molly {
+        display: flex;
+        justify-content: center;
+        padding-top: 80px;
+
+    }
+}
+
+// Styling af spillet
+
+.game-area {
+    position: relative;
+    background-image: url('/baggrunddesktop.webp');
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.button {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    background-color: $dark-green;
+    color: white;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 900;
+    line-height: 120%;
+    font-size: 24px;
+    font-family: $avenir-font;
+    border-radius: 12px;
+    padding: 12px 24px;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    margin-top: 32px;
+}
+
+.score-display {
+    position: absolute;
+    top: 1.25rem;
+    left: 1.25rem;
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+.hotdog {
+    position: absolute;
+    width: 88px;
+    height: 80px;
+    animation: moveHotdog 5s linear infinite;
+}
+
+@keyframes moveHotdog {
+
+    0% {
+        transform: rotate(0);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+
+
+}
+
+.hund {
+    position: absolute;
+    bottom: 2.5rem;
+    width: 150px;
+    height: 150px;
+}
+
+@media screen and (max-width: 768px) {
+    .game-area {
+        background-image: url('/baggrundmobile.svg');
+        background-size: cover;
+    }
+
+    .hotdog {
+        width: 60px;
+        height: 60px;
+    }
+
+}
