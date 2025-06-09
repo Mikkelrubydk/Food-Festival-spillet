@@ -254,7 +254,7 @@ export default function GamePage() {
       {gameState === "playing" && (
         <div ref={gameAreaRef} className="game-area">
           <div className="score-display">
-            🏆 Point: {score} | 🎖️ Highscore: {highScore} | 🚀 Level: {level}
+            🏆 Point: {score} | 🎖️ Highscore: {highScore}
           </div>
           <div
             ref={hotdogRef}
