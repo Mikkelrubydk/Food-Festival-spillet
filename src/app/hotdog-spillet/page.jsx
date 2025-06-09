@@ -186,7 +186,7 @@ export default function GamePage() {
     const hotdog = hotdogRef.current;
     hotdog.style.top = "-100px";
     hotdog.style.left =
-      Math.floor(Math.random() * (window.innerWidth - 50)) + "px";
+      Math.floor(Math.random() * (window.innerWidth - 30)) + "px";
   };
 
   const startGame = () => {

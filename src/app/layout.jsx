@@ -3,10 +3,16 @@
 import "./styles/generel.scss";
 import NavBar from "./components/navigation";
 import { usePathname } from "next/navigation";
+import hotdogImg from "/public/hotdogimg.svg";
+
+export const metadata = {
+  icons: {
+    icon: hotdogImg,
+  },
+};
 
 export default function RootLayout({ children }) {
   const pathname = usePathname();
-
   const mainClass = pathname === "/hotdog-spillet" ? "no-padding" : "";
 
   return (
