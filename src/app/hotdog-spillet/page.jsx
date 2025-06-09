@@ -221,7 +221,7 @@ export default function GamePage() {
   return (
     <>
       {gameState === "start" && (
-        <div className="start-screen">
+        <div className="start-screen padding-bottom">
           <section>
             <Link href="/profil">
               <div className="point-link">
@@ -271,7 +271,7 @@ export default function GamePage() {
       )}
 
       {gameState === "result" && (
-        <div className="result-screen">
+        <div className="result-screen padding-bottom">
           <Link href="/profil">
             <div className="point-link">
               <h4>{savedPoints} Point</h4>
@@ -302,7 +302,7 @@ export default function GamePage() {
       )}
 
       {gameState === "limitReached" && (
-        <div className="limit-screen">
+        <div className="limit-screen padding-bottom">
           <Link href="/profil">
             <div className="point-link">
               <h4>{savedPoints} Point</h4>
