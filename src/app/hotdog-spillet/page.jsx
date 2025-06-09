@@ -74,7 +74,6 @@ export default function GamePage() {
       }
     };
 
-    // Ny dragging logik her:
     let dragging = false;
     let lastTouchX = 0;
 
@@ -139,9 +138,15 @@ export default function GamePage() {
       const hotdogRect = hotdog.getBoundingClientRect();
       const hundRect = hund.getBoundingClientRect();
 
+      function playPointSound() {
+        const sound = new Audio("/point.mp3");
+        sound.volume = 0.1;
+        sound.play();
+      }
+
       if (checkCollision(hotdogRect, hundRect)) {
-        const eatSound = document.getElementById("eat-sound");
-        // if (eatSound) eatSound.play();
+        playPointSound();
+
         setScore((prev) => {
           const newScore = prev + 1;
           scoreRef.current = newScore;
@@ -266,7 +271,6 @@ export default function GamePage() {
           <div ref={hundRef} className="hund" style={{ left: hundX }}>
             <Image src={mollyImg} alt="Hund" fill />
           </div>
-          <audio id="eat-sound" src="/nam.mp3" preload="auto"></audio>
         </div>
       )}
 
