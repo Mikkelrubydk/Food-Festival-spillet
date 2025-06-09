@@ -6,6 +6,7 @@ import "../styles/hotdogspillet.scss";
 import hotdogImg from "/public/hotdogimg.svg";
 import mollyImg from "/public/molly2.svg";
 import mollySittingImg from "/public/molly1.svg";
+import sleepingMolly from "/public/sleeping-molly.svg";
 import arrowRight from "/public/arrow-right.svg";
 import Link from "next/link";
 
@@ -49,6 +50,17 @@ export default function GamePage() {
   }, []);
 
   useEffect(() => {
+    const nav = document.querySelector("nav");
+    if (!nav) return;
+
+    if (gameState === "playing") {
+      nav.style.display = "none";
+    } else {
+      nav.style.display = "";
+    }
+  }, [gameState]);
+
+  useEffect(() => {
     const handleKeyDown = (e) => {
       if (gameState !== "playing") return;
       if (e.key === "ArrowLeft") {
@@ -62,35 +74,52 @@ export default function GamePage() {
       }
     };
 
-    const touchStartX = { current: 0 };
+    // Ny dragging logik her:
+    let dragging = false;
+    let lastTouchX = 0;
 
     const handleTouchStart = (e) => {
       if (gameState !== "playing") return;
-      touchStartX.current = e.touches[0].clientX;
+      dragging = true;
+      lastTouchX = e.touches[0].clientX;
+    };
+
+    const handleTouchMove = (e) => {
+      if (gameState !== "playing" || !dragging) return;
+      const touchX = e.touches[0].clientX;
+      const deltaX = touchX - lastTouchX;
+      lastTouchX = touchX;
+
+      setHundX((prev) => {
+        let newX = prev + deltaX;
+        const maxX = window.innerWidth - (hundRef.current?.offsetWidth || 100);
+        if (newX < 0) newX = 0;
+        if (newX > maxX) newX = maxX;
+
+        if (deltaX > 0) {
+          hundRef.current.style.transform = "scaleX(-1)";
+        } else if (deltaX < 0) {
+          hundRef.current.style.transform = "scaleX(1)";
+        }
+
+        return newX;
+      });
     };
 
     const handleTouchEnd = (e) => {
       if (gameState !== "playing") return;
-      const touchEndX = e.changedTouches[0].clientX;
-      const diff = touchEndX - touchStartX.current;
-      if (diff > 30) {
-        setHundX((prev) =>
-          Math.min(prev + 50, window.innerWidth - hundRef.current.offsetWidth)
-        );
-        hundRef.current.style.transform = "scaleX(-1)";
-      } else if (diff < -30) {
-        setHundX((prev) => Math.max(prev - 50, 0));
-        hundRef.current.style.transform = "scaleX(1)";
-      }
+      dragging = false;
     };
 
     document.addEventListener("keydown", handleKeyDown);
     document.addEventListener("touchstart", handleTouchStart);
+    document.addEventListener("touchmove", handleTouchMove);
     document.addEventListener("touchend", handleTouchEnd);
 
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
       document.removeEventListener("touchstart", handleTouchStart);
+      document.removeEventListener("touchmove", handleTouchMove);
       document.removeEventListener("touchend", handleTouchEnd);
     };
   }, [gameState]);
@@ -111,6 +140,8 @@ export default function GamePage() {
       const hundRect = hund.getBoundingClientRect();
 
       if (checkCollision(hotdogRect, hundRect)) {
+        const eatSound = document.getElementById("eat-sound");
+        // if (eatSound) eatSound.play();
         setScore((prev) => {
           const newScore = prev + 1;
           scoreRef.current = newScore;
@@ -172,7 +203,7 @@ export default function GamePage() {
 
   const endGame = () => {
     const finalScore = scoreRef.current;
-    const earnedPoints = finalScore * 5;
+    const earnedPoints = finalScore * 1;
     earnedPointsRef.current = earnedPoints;
 
     const newTotal = savedPoints + earnedPoints;
@@ -223,7 +254,7 @@ export default function GamePage() {
       {gameState === "playing" && (
         <div ref={gameAreaRef} className="game-area">
           <div className="score-display">
-            🏆 Score: {score} | 🎖️ Highscore: {highScore} | 🚀 Level: {level}
+            🏆 Point: {score} | 🎖️ Highscore: {highScore} | 🚀 Level: {level}
           </div>
           <div
             ref={hotdogRef}
@@ -235,6 +266,7 @@ export default function GamePage() {
           <div ref={hundRef} className="hund" style={{ left: hundX }}>
             <Image src={mollyImg} alt="Hund" fill />
           </div>
+          <audio id="eat-sound" src="/nam.mp3" preload="auto"></audio>
         </div>
       )}
 
@@ -251,7 +283,7 @@ export default function GamePage() {
             Tak fordi du hjalp Molly i Hotdog-spillet i dag. Kom tilbage igen i
             morgen og spil igen!
           </p>
-          <p className="score">{scoreRef.current} point</p>
+          <p className="score">{score} point</p>
 
           <div className="standing-molly">
             <Image
@@ -281,14 +313,15 @@ export default function GamePage() {
           <h3>Molly er mæt og træt for i dag!</h3>
           <p>
             Kom tilbage igen i morgen og spil en ny runde af Hotdog-spillet og
-            optjen flere point til lækre præmier.
+            hjælp Molly.
           </p>
           <div className="molly">
             <Image
-              src="/sleeping-molly.svg"
+              src={sleepingMolly}
               alt="Molly"
               width={300}
               height={200}
+              sizes="100%"
             />
           </div>
         </div>
